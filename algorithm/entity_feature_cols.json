@@ -1,0 +1,8 @@
+[
+  "Energy_Traded_kWh",
+  "Transaction_Cost_USD",
+  "Blockchain_Verified",
+  "tx_count",
+  "Voltage_V",
+  "Current_A"
+]

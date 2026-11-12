@@ -1,0 +1,25 @@
+node_modules/
+public/
+dist/
+开发文档总结/
+
+# Java、Truffle 与 Python 构建产物
+demo/target/
+build/
+__pycache__/
+*.pyc
+*.log
+
+# 本机配置与密钥
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.p12
+*.pfx
+server/server.cert
+
+# 编辑器配置
+.idea/
+.vscode/

@@ -1,0 +1,11 @@
+[
+  "Energy_Traded_kWh",
+  "Transaction_Cost_USD",
+  "Blockchain_Verified",
+  "daily_tx_count",
+  "Voltage_V",
+  "Current_A",
+  "Residential_Consumption_kWh",
+  "Commercial_Consumption_kWh",
+  "Industrial_Consumption_kWh"
+]
