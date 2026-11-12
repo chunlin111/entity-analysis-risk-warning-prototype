@@ -30,7 +30,7 @@ def load_all_resources():
     try:
         with open(os.path.join(BASE_DIR,"entity_feature_cols.json"), "r", encoding="utf-8") as f:
             feature_cols_entity = json.load(f)
-        model_entity = lgb.Booster(model_file="entity_lgb_model.txt")
+        model_entity = lgb.Booster(model_file=os.path.join(BASE_DIR, "entity_lgb_model.txt"))
         print("实体预测模型及特征列加载成功")
     except Exception as e:
         print(f"实体预测资源加载失败: {str(e)}")
@@ -40,7 +40,7 @@ def load_all_resources():
     try:
         with open(os.path.join(BASE_DIR,"feature_cols.json"), "r", encoding="utf-8") as f:
             feature_cols_risk = json.load(f)
-        model_risk = lgb.Booster(model_file="lgb_model.txt")
+        model_risk = lgb.Booster(model_file=os.path.join(BASE_DIR, "lgb_model.txt"))
         print("风险预测模型及特征列加载成功")
     except Exception as e:
         print(f"风险预测资源加载失败: {str(e)}")
