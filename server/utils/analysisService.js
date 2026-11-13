@@ -2,6 +2,11 @@ const axios = require('axios');
 const User = require('../models/User');
 const AnalyticsData = require('../models/AnalyticsData');
 
+// 数值 0 是有效特征；其他空值沿用原有的默认值规则。
+function withNumericDefault(value, fallback) {
+    return value === 0 ? value : (value || fallback);
+}
+
 let entityData = [];
 let riskData = [];
 
@@ -35,27 +40,27 @@ async function runAnalysis(userId, productId, orderId, businessData) {
         const entitySample = entityData[entitySampleIndex];
 
         // === 2. 准备实体分析数据 (Entity Source) ===
-        const ent_Energy = parseFloat(entitySample.Energy_Traded_kWh || 0);
-        const ent_Cost = parseFloat(entitySample.Transaction_Cost_USD || 0);
-        const ent_Voltage = parseFloat(entitySample.Voltage_V || 220);
-        const ent_Current = parseFloat(entitySample.Current_A || 10);
-        const ent_Verified = parseInt(entitySample.Blockchain_Verified || 1, 10);
-        const ent_TxCount = parseInt(entitySample.tx_count || 1, 10);
+        const ent_Energy = parseFloat(withNumericDefault(entitySample.Energy_Traded_kWh, 0));
+        const ent_Cost = parseFloat(withNumericDefault(entitySample.Transaction_Cost_USD, 0));
+        const ent_Voltage = parseFloat(withNumericDefault(entitySample.Voltage_V, 220));
+        const ent_Current = parseFloat(withNumericDefault(entitySample.Current_A, 10));
+        const ent_Verified = parseInt(withNumericDefault(entitySample.Blockchain_Verified, 1), 10);
+        const ent_TxCount = parseInt(withNumericDefault(entitySample.tx_count, 1), 10);
         
         let true_entity_label = parseInt(entitySample.Entity_Type_Label, 10);
         if (isNaN(true_entity_label)) true_entity_label = null;
 
         // === 3. 准备风险预警数据 (Risk Source) ===
-        const risk_Energy = parseFloat(riskSample.Energy_Traded_kWh || ent_Energy); // 优先用Risk表里的
-        const risk_Cost = parseFloat(riskSample.Transaction_Cost_USD || ent_Cost);
-        const risk_Voltage = parseFloat(riskSample.Voltage_V || 220);
-        const risk_Current = parseFloat(riskSample.Current_A || 10);
-        const risk_Verified = parseInt(riskSample.Blockchain_Verified || 1, 10);
-        const risk_DailyTx = parseInt(riskSample.daily_tx_count || 1, 10);
+        const risk_Energy = parseFloat(withNumericDefault(riskSample.Energy_Traded_kWh, ent_Energy)); // 优先用Risk表里的
+        const risk_Cost = parseFloat(withNumericDefault(riskSample.Transaction_Cost_USD, ent_Cost));
+        const risk_Voltage = parseFloat(withNumericDefault(riskSample.Voltage_V, 220));
+        const risk_Current = parseFloat(withNumericDefault(riskSample.Current_A, 10));
+        const risk_Verified = parseInt(withNumericDefault(riskSample.Blockchain_Verified, 1), 10);
+        const risk_DailyTx = parseInt(withNumericDefault(riskSample.daily_tx_count, 1), 10);
         
-        const risk_Res = parseFloat(riskSample.Residential_Consumption_kWh || 0);
-        const risk_Com = parseFloat(riskSample.Commercial_Consumption_kWh || 0);
-        const risk_Ind = parseFloat(riskSample.Industrial_Consumption_kWh || 0);
+        const risk_Res = parseFloat(withNumericDefault(riskSample.Residential_Consumption_kWh, 0));
+        const risk_Com = parseFloat(withNumericDefault(riskSample.Commercial_Consumption_kWh, 0));
+        const risk_Ind = parseFloat(withNumericDefault(riskSample.Industrial_Consumption_kWh, 0));
 
         const now = new Date();
         const timestampString = now.toISOString().replace('T', ' ').substring(0, 19);
